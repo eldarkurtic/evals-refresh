@@ -13,6 +13,7 @@ exec vllm serve "$MODEL" \
   --data-parallel-size "$DP" \
   --max-model-len 262144 \
   --reasoning-parser qwen3 \
+  --default-chat-template-kwargs '{"enable_thinking": true, "reasoning_effort": "xhigh"}' \
   --enable-auto-tool-choice --tool-call-parser qwen3_xml \
   --served-model-name "$MODEL" \
   --host 0.0.0.0 --port "$PORT"
