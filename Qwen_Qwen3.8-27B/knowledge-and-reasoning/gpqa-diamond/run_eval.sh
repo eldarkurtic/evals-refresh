@@ -13,10 +13,6 @@ LOG_DIR="${LOG_DIR:-./logs}"
 export VLLM_BASE_URL="${VLLM_BASE_URL:-http://localhost:${PORT}/v1}"
 export VLLM_API_KEY="${VLLM_API_KEY:-local}"
 
-echo "==> waiting for ${VLLM_BASE_URL}"
-until curl -sf "${VLLM_BASE_URL%/v1}/health" >/dev/null; do sleep 10; done
-echo "    server up"
-
 inspect eval inspect_evals/gpqa_diamond \
   --model "vllm/${MODEL}" \
   --epochs "$EPOCHS" --epochs-reducer mean \
