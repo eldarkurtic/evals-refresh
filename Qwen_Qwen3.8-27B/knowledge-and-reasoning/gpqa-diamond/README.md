@@ -13,6 +13,8 @@
   (parallelism, context length, reasoning/tool parsers), taken from the official recipe.
 - `run_eval.sh` — runs the Inspect task against that server. Inspect-side params live here
   (task, epochs, sampling params, reasoning effort, max tokens, concurrency).
+- `server_requirements.txt` / `client_requirements.txt` — `pip freeze` of the vLLM and Inspect
+  venvs that produced the results below, with the host (GPUs, driver, CUDA, Python) in the header.
 - `local_orchestrator.sh` — runs everything in your local dev environment: activates the
   venvs, sets GPUs, starts `serve.sh` in the background, runs `run_eval.sh`, tears down.
   **This is the only file you should modify** to match the environment you run in.
