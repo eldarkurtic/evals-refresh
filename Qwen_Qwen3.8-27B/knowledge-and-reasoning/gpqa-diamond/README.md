@@ -49,8 +49,6 @@ the following scores and token stats are obtained:
 | median | 282 | 7,560 | 7,340 |
 | max | 2,844 | 98,187 | 97,907 |
 
-Log: `logs/2026-09-17T11-50-21-00-00_gpqa-diamond_M9RNDrU4khadEkxT84FbR5.eval` (2026-09-17)
-
 ## (optional) Patches for inspect-ai
 
 Any change we had to make to `inspect-ai` / `inspect_evals` to run this task, with enough
