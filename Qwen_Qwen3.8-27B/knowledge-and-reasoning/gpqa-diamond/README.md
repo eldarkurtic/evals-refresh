@@ -7,6 +7,11 @@
 | Exec tier | `none` — no Docker, no sandbox, no tools |
 | vLLM recipe | https://recipes.vllm.ai/Qwen/Qwen3.8-27B |
 
+`cot=True` (the package default): every question is asked with the package's chain-of-thought multiple-choice
+prompt (`ANSWER: $LETTER`), answer choices shuffled with the package's fixed seed (`shuffle_choices=42`). The
+dataset is the simple-evals `gpqa_diamond.csv`, verified by SHA256 inside `inspect_evals` (no HF revision).
+The package default is 4 epochs; this run uses the repo convention of 3 (avg@3).
+
 ## Files
 
 - `serve.sh` — deploys the model with a vLLM server. vLLM-serve arguments live here
@@ -32,7 +37,7 @@ Always smoke-test first: `EPOCHS=1 ./local_orchestrator.sh --limit 5`
 
 With model generation config:
 
-`temperature=1.0, top_p=0.95, top_k=20, reasoning_effort=xhigh, max_tokens=131072, max_connections=128, epochs=3 (mean)`
+`temperature=1.0, top_p=0.95, top_k=20, reasoning_effort=xhigh, max_tokens=131072, max_connections=128, client_timeout=7200, epochs=3 (mean)`
 
 the following scores and token stats are obtained:
 
@@ -44,12 +49,15 @@ the following scores and token stats are obtained:
 | samples | 594 (198 x 3 epochs) |
 | truncated (stop_reason=max_tokens) | 0 |
 | unparsed answers | 1 (model stopped after 53k reasoning tokens with an empty final answer) |
+| sample errors | 0 |
 
 | tokens / sample | input | output | reasoning |
 |---|---|---|---|
 | mean | 316 | 13,255 | 12,947 |
 | median | 282 | 7,560 | 7,340 |
 | max | 2,844 | 98,187 | 97,907 |
+
+Total run time about 25 min on 8x H100 (128 concurrent samples).
 
 ## (optional) Patches for inspect-ai
 

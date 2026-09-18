@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# GPQA-Diamond on google/gemma-4-31B-it via an already-running vLLM server.
+# GPQA-Diamond on google/gemma-4-31B-it against an already-running vLLM server.
+# Sampling params come from the model's generation_config.json (temp 1.0, top_p 0.95, top_k 64).
+# assets/generate_config.json turns thinking on per request (Gemma 4 has no reasoning-effort levels,
+# only enable_thinking); it is also the server default in serve.sh.
 # -M client_timeout raises Inspect's HTTP timeout (default 600s): long reasoning traces take longer
 # than 10 min to generate and would otherwise be cut off and retried from scratch forever.
 set -euo pipefail
@@ -12,9 +15,6 @@ LOG_DIR="${LOG_DIR:-./logs}"
 export VLLM_BASE_URL="${VLLM_BASE_URL:-http://localhost:${PORT}/v1}"
 export VLLM_API_KEY="${VLLM_API_KEY:-local}"
 
-# Sampling params come from the model's generation_config.json (temp 1.0, top_p 0.95, top_k 64).
-# assets/generate_config.json turns thinking on per request (Gemma 4 has no reasoning-effort levels,
-# only enable_thinking); it is also the server default in serve.sh.
 inspect eval inspect_evals/gpqa_diamond \
   --model "vllm/${MODEL}" \
   --epochs "$EPOCHS" --epochs-reducer mean \

@@ -8,7 +8,7 @@
 | vLLM recipe | https://recipes.vllm.ai/Qwen/Qwen3.8-27B |
 
 `fewshot=0` (the package default): every question is asked zero-shot with the package's chain-of-thought
-multiple-choice prompt (`ANSWER: $LETTER`). Dataset pinned at revision `b189ec765a`.
+multiple-choice prompt (`ANSWER: $LETTER`). Dataset pinned at revision `527feea0af`.
 
 ## Files
 

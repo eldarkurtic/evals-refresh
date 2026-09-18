@@ -7,6 +7,11 @@
 | Exec tier | `none` — no Docker, no sandbox, no tools |
 | vLLM recipe | https://recipes.vllm.ai/Google/gemma-4-31B-it |
 
+`cot=True` (the package default): every question is asked with the package's chain-of-thought multiple-choice
+prompt (`ANSWER: $LETTER`), answer choices shuffled with the package's fixed seed (`shuffle_choices=42`). The
+dataset is the simple-evals `gpqa_diamond.csv`, verified by SHA256 inside `inspect_evals` (no HF revision).
+The package default is 4 epochs; this run uses the repo convention of 3 (avg@3).
+
 ## Files
 
 - `serve.sh` — deploys the model with a vLLM server. vLLM-serve arguments live here
@@ -15,6 +20,7 @@
   (task, epochs, sampling params, reasoning effort, max tokens, concurrency).
 - `assets/generate_config.json` — Inspect generate config that cannot be given as a CLI flag; here it
   carries the per-request `chat_template_kwargs` that enable thinking.
+- `assets/tool_chat_template_gemma4.jinja` — vLLM's Gemma 4 chat template (from the recipe), used by `serve.sh`.
 - `server_requirements.txt` / `client_requirements.txt` — `pip freeze` of the vLLM and Inspect
   venvs that produced the results below, with the host (GPUs, driver, CUDA, Python) in the header.
 - `local_orchestrator.sh` — runs everything in your local dev environment: activates the
@@ -46,12 +52,15 @@ the following scores and token stats are obtained:
 | samples | 594 (198 x 3 epochs) |
 | truncated (stop_reason=max_tokens) | 0 |
 | unparsed answers | 0 |
+| sample errors | 0 |
 
 | tokens / sample | input | output | reasoning |
 |---|---|---|---|
 | mean | 269 | 5,776 | 5,014 |
 | median | 238 | 5,498 | 4,642 |
 | max | 2,434 | 17,093 | 16,538 |
+
+Total run time about 12 min on 8x H100 (128 concurrent samples). The model card reports 84.3%.
 
 ## (optional) Patches for inspect-ai
 

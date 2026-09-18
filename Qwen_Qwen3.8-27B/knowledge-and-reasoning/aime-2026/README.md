@@ -48,6 +48,7 @@ the following scores and token stats are obtained:
 | problems solved 8/8 | 27 (problem 10: 6/8, 15: 6/8, 28: 7/8) |
 | truncated (stop_reason=max_tokens) | 0 |
 | unparsed answers | 1 |
+| sample errors | 0 |
 
 | tokens / sample | input | output | reasoning |
 |---|---|---|---|
