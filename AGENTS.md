@@ -5,6 +5,14 @@ This repo holds copy-pasteable, reproducible evaluations of open-weight models s
 task packages). Read this file before running or adding anything. Everything below is a rule
 unless it says "hint".
 
+## 0. Local environment notes
+
+`local_env_notes.md`, next to this file, holds host-specific facts (GPUs, caches, venv paths, Docker setup,
+serving conventions) for the machine this checkout runs on. Read it before running anything and update it
+when the host changes; it is imported below so that Claude Code loads it with this file.
+
+@local_env_notes.md
+
 ## 1. Ground truth, in priority order
 
 1. **Serving flags come from the model's official vLLM recipe** at `https://recipes.vllm.ai/<Org>/<model>`
@@ -19,8 +27,9 @@ unless it says "hint".
    `assets/generate_config.json` for Gemma, which has no effort levels). Adapt as needed for
    each model family.
 4. **Task definitions come from `inspect_evals` or `inspect_harbor` unchanged.** No task wrappers
-   in this repo. If a task is broken, fix it upstream (PR) and pin to the fixed commit; document
-   it under the README's "Patches" section.
+   in this repo. If a task is broken, fix it upstream (PR from a fork under github.com/eldarkurtic) and
+   consume the fix from the fork branch (pip install from git, or a Harbor registry pin to the fork
+   commit); document it under the README's "Patches for upstream" section. No local patch scripts.
 5. **The model card's protocol decides comparability.** Before adding a task, read what the card
    reports (subset, single-shot vs agentic, judge, epochs) and say in the README whether our number
    is comparable. `eval_coverage_matrix.txt` at the repo root maps benchmarks to packages,
@@ -132,7 +141,9 @@ keeps completed ones. It reuses the log's task and args; env vars still apply.
 <one-paragraph protocol note if the number is not comparable to the model card>
 
 ## Files            (one line per file, what lives in it; local_orchestrator.sh is "the only file you should modify")
-## Run              (the three commands above; Docker expectations for sandboxed tasks)
+## Run              (### Setup: how to create both venvs from the *_requirements.txt files or the pinned
+                     packages, HF_TOKEN / gated datasets, Docker expectations; ### Run the eval: the three
+                     commands above. A newcomer must be able to reproduce the results from the README alone.)
 ## Results
 With model generation config:
 `<eval.model_generate_config, plus epochs, limits, client_timeout>`
@@ -141,7 +152,9 @@ the following scores and token stats are obtained:
                                           truncated / time-limit hits, unparsed / no-solution, sample errors
 | tokens / sample | input | output | reasoning |   mean / median / max
 <one line on how to read the token numbers if non-obvious; list of always-failing tasks for agentic evals>
-## (optional) Patches for inspect-ai   (upstream PR links; how this dir pins to the fix; what to revert once merged)
+## Patches for upstream   (every upstream defect this task needed fixed: the PR/issue link, and how this dir
+                            consumes the fix from the fork - a pip install from the fork branch or a Harbor registry
+                            pin to the fork commit in assets/ - never a local patch script; "None." otherwise)
 ```
 
 No log filenames in the README (logs are gitignored). No environment details in the README

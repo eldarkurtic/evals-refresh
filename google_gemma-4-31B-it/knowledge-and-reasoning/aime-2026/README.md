@@ -27,6 +27,30 @@ last line. With only 30 problems, `EPOCHS` (default 8, avg@8) drives the standar
 
 ## Run
 
+### Setup (once per host)
+
+`local_orchestrator.sh` activates two virtualenvs, `~/.venvs/vllm` for the server and `~/.venvs/inspect` for the
+Inspect client; create them as below (edit the paths in `local_orchestrator.sh` if you keep them elsewhere).
+`server_requirements.txt` and `client_requirements.txt` are the exact `pip freeze` of the environments that
+produced the results below (Python 3.12, host details in their headers): installing from them reproduces those
+environments; the commented alternative gives an equivalent fresh install with the same pinned versions.
+
+```bash
+# server: vLLM 0.29.0 (CUDA 13 wheels; add the matching https://download.pytorch.org/whl/<cuXXX> index if pip cannot resolve torch)
+python3.12 -m venv ~/.venvs/vllm && source ~/.venvs/vllm/bin/activate
+pip install -r server_requirements.txt          # or: pip install vllm==0.29.0
+# client: Inspect
+python3.12 -m venv ~/.venvs/inspect && source ~/.venvs/inspect/bin/activate
+pip install -r client_requirements.txt          # or:
+# pip install "inspect-evals==0.20.0" openai
+```
+
+Model weights and datasets are fetched from the Hugging Face Hub on first use into the usual cache (`HF_HOME`
+if set). Export `HF_TOKEN` in your shell before running (never in the repo); nothing here is gated, but anonymous Hub
+downloads are rate-limited.
+
+### Run the eval
+
 ```bash
 ./local_orchestrator.sh
 inspect view --log-dir ./logs
@@ -61,7 +85,6 @@ the following scores and token stats are obtained:
 
 Total run time about 11 min on 8x H100 (128 concurrent samples). The model card reports 89.2% (no tools).
 
-## (optional) Patches for inspect-ai
+## Patches for upstream
 
-Any change we had to make to `inspect-ai` / `inspect_evals` to run this task, with enough
-detail to reapply it. None needed so far.
+None.
