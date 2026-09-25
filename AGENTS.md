@@ -32,7 +32,7 @@ when the host changes; it is imported below so that Claude Code loads it with th
    commit); document it under the README's "Patches for upstream" section. No local patch scripts.
 5. **The model card's protocol decides comparability.** Before adding a task, read what the card
    reports (subset, single-shot vs agentic, judge, epochs) and say in the README whether our number
-   is comparable. `eval_coverage_matrix.txt` at the repo root maps benchmarks to packages,
+   is comparable. `eval_coverage_matrix.md` at the repo root maps benchmarks to packages,
    categories, and execution tiers (`none` / `sandbox` / `agent`).
 
 ## 2. Layout
@@ -50,7 +50,7 @@ when the host changes; it is imported below so that Claude Code loads it with th
 ```
 
 - `<org>_<model>` is the HF id with `/` replaced by `_` (`Qwen_Qwen3.8-27B`, `google_gemma-4-31B-it`).
-- `<category>` is the `Evaluates` column of `eval_coverage_matrix.txt`: `knowledge-and-reasoning`,
+- `<category>` is the `Evaluates` column of `eval_coverage_matrix.md`: `knowledge-and-reasoning`,
   `agentic-and-coding`, `general-tool-usage`, `long-context`, `multimodal`.
 - Every task directory is standalone. No shared includes, nothing to source. Duplication across
   models is deliberate; drift between copies is expected and is the point (each copy documents
@@ -180,7 +180,7 @@ Python.
 
 ## 8. Adding a new task
 
-1. Find it in `eval_coverage_matrix.txt`. `inspect_evals` tasks run in `~/.venvs/inspect`;
+1. Find it in `eval_coverage_matrix.md`. `inspect_evals` tasks run in `~/.venvs/inspect`;
    `inspect_harbor` tasks (`Where` = `inspect_harbor`) need `~/.venvs/inspect-harbor` and Docker.
    `PARTIAL` / `MISSING` rows are not the benchmark the cards report; say so if asked.
 2. Read the task's README in the package and its task signature (`inspect list tasks`, or import
