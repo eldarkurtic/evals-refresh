@@ -1,0 +1,9 @@
+canary: probing http://localhost:8000/v1 model=RedHatAI/GLM-5.3-speculator.dflash2-preview every 120.0s, max_tokens=1024; log=logs/canary.jsonl
+canary 1: ok=True mal=2.8683473389355743 steps=357 tps=52.88
+canary 2: ok=True mal=3.1604938271604937 steps=324 tps=115.96
+canary 3: ok=True mal=3.942528735632184 steps=261 tps=143.05
+canary 4: ok=True mal=2.898016997167139 steps=353 tps=104.15
+canary 5: ok=True mal=4.217213114754099 steps=244 tps=150.35
+canary 6: ok=True mal=2.914529914529915 steps=351 tps=106.67
+canary 7: ok=True mal=3.0720720720720722 steps=333 tps=110.28
+canary: stop file present, exiting
